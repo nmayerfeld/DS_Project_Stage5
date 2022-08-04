@@ -63,7 +63,7 @@ public class StackImpl<T> implements Stack <T>
             return myData;
         }
     }
-    //stuff for the stack class
+    
     private LinkedList elementList;
     private int numInStack;
     public StackImpl()
@@ -71,11 +71,18 @@ public class StackImpl<T> implements Stack <T>
         this.elementList=new LinkedList();
         this.numInStack=0;
     }
+    /**
+     * @param element
+     */
     public void push (T element)
     {
         this.elementList.add(element);
         this.numInStack++;
     }
+    /**
+     * @return the T at the top of the stack, removing it in the process
+     * @throws IllegalStateException if stack is empty
+     */
     public T pop() throws IllegalStateException
     {
         if(numInStack==0)
@@ -85,10 +92,17 @@ public class StackImpl<T> implements Stack <T>
         this.numInStack--;
         return (T)this.elementList.removeFront();
     }
+    /**
+     * @return the T at the top of the stack
+     * @throws IllegalStateException if stack is empty
+     */
     public T peek() throws IllegalStateException
     {
         return (T)this.elementList.viewFront();
     }
+    /**
+     * @return the size of the stack
+     */
     public int size()
     {
         return this.numInStack;
