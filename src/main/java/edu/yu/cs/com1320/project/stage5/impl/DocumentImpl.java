@@ -89,6 +89,10 @@ public class DocumentImpl implements Document
     {
         return this.documentURI;
     }
+    /**
+     * @param word
+     * @return the number of times word appears in the document
+     */
     public int wordCount(String word)
     {
         if(word==null||this.documentBinaryData!=null)
@@ -102,6 +106,9 @@ public class DocumentImpl implements Document
         }
         return this.words.get(myWord);
     }
+    /**
+     * @return the list of words in the document
+     */
     public Set<String> getWords()
     {
         return this.words.keySet();
@@ -143,17 +150,26 @@ public class DocumentImpl implements Document
     {
         return this.timeStamp;
     }
+    /**
+     * @param timeInNanoseconds
+     * sets lastUseTime to timeInNanoseconds
+     */
     public void setLastUseTime(long timeInNanoseconds)
     {
         this.timeStamp=timeInNanoseconds;
-
     }
+    /**
+     * @return a Map of words to the number of times they appear
+     */
     public Map<String,Integer> getWordMap()
     {
         Map<String,Integer> copyOfMap=new HashMap<>();
         copyOfMap.putAll(this.words);
         return copyOfMap;
     }
+    /**
+     * @param wordMap
+     */
     public void setWordMap(Map<String,Integer> wordMap)
     {
         this.words=wordMap;
