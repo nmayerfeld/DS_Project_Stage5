@@ -111,6 +111,9 @@ public class BTreeImpl<Key extends Comparable<Key>, Value> implements BTree<Key,
     {
         return this.height;
     }
+    /**
+     * @return the minimum entry of this B-tree
+     */
     public Entry getMinEntry()
     {
         Node current = this.leftMostExternalNode;
@@ -374,6 +377,11 @@ public class BTreeImpl<Key extends Comparable<Key>, Value> implements BTree<Key,
         }
         return newNode;
     }
+    /**
+     * @param k
+     * serializes the entry stored at Key k as a JSON
+     * replaces the value with the url
+     */
     public void moveToDisk(Key k) throws Exception
     {
         //serialize it, and then turn that entry.val into a url
@@ -381,6 +389,10 @@ public class BTreeImpl<Key extends Comparable<Key>, Value> implements BTree<Key,
         Entry alreadyThere = this.get(this.root, k, this.height);
         alreadyThere.val=sentinal;
     }
+    /**
+     * @param pm
+     * sets the persistence manager to pm
+     */
     public void setPersistenceManager(PersistenceManager<Key,Value> pm)
     {
         this.pm=pm;
