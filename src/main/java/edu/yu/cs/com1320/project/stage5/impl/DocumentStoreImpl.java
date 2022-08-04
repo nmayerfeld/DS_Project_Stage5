@@ -435,7 +435,7 @@ public class DocumentStoreImpl implements DocumentStore
             commandStack.push(undoable);
         }
     }
-    //relies on a public StackImpl.LinkedList class and element list (which have been made private after testing)
+    //relies on a public StackImpl.LinkedList class and element list (which have been made private after testing to fulfill requirements of this assignment)
     /*public void printStack()
     {
         StackImpl.LinkedList ll= this.commandStack.elementList;
@@ -595,6 +595,10 @@ public class DocumentStoreImpl implements DocumentStore
         this.maxBytes=limit;
         this.handleMaximums();
     }
+    /**
+     * update variables tracking storage for addition of a document to the database
+     * @param d
+     */
     private void updateStorageTrackersForAdd(Document d)
     {
         this.numDocs++;
@@ -607,6 +611,10 @@ public class DocumentStoreImpl implements DocumentStore
             this.byteCount+=d.getDocumentBinaryData().length;
         }
     }
+    /**
+     * update variables tracking storage for removal of a document to the database
+     * @param d
+     */
     private void updateStorageTrackerForDelete(Document d)
     {
         this.numDocs--;
@@ -619,11 +627,19 @@ public class DocumentStoreImpl implements DocumentStore
             this.byteCount-=d.getDocumentBinaryData().length;
         }
     }
+    /**
+     * update variables tracking storage for modification of a document to the database
+     * @param oldDoc, newDoc
+     */
     private void updateStorageTrackerForModify(Document oldDoc, Document newDoc)
     {
         updateStorageTrackerForDelete(oldDoc);
         updateStorageTrackersForAdd(newDoc);
     }
+    /**
+     * @param d
+     * @return the size of d in bytes
+     */
     private int getDocSize(Document d)
     {
         int size;
@@ -637,6 +653,9 @@ public class DocumentStoreImpl implements DocumentStore
         }
         return size;
     }
+    /**
+     * check whether storage exceeds maximums and deal with what needs to be done if it has
+     */
     private void handleMaximums()
     {
         while(numDocs>maxDocs||byteCount>maxBytes)
@@ -687,6 +706,10 @@ public class DocumentStoreImpl implements DocumentStore
             this.docsInMemory.remove(d);
         }
     }
+    /**
+     * deletes document from the trie
+     * @param d
+     */
     private void deleteDocFromTrie(Document d)
     {
         for(String w: d.getWords())
@@ -694,6 +717,10 @@ public class DocumentStoreImpl implements DocumentStore
             this.myTrie.delete(w,d.getKey());
         }
     }
+    /**
+     * adds document to the trie
+     * @param d
+     */
     private void addDocToTrie(Document d)
     {
         for(String w: d.getWords())
@@ -701,12 +728,20 @@ public class DocumentStoreImpl implements DocumentStore
             this.myTrie.put(w,d.getKey());
         }
     }
+    /**
+     * removes document from MinHeap
+     * @param d
+     */
     private void removeFromMinHeap(Document d)
     {
         d.setLastUseTime(this.origNanoTime);
         this.minHeap.reHeapify(new URICompare(d.getKey(),this.btree)); //inside reHeapify, i find the array index of that element using equals method (the URICompare equals method just checks to see if the uri is the same so my new instance will b eqaul to the old instance already in the minheap)
         this.minHeap.remove();
     }
+    /**
+     * @param d
+     * @return true if document is a text document, false if it is binary
+     */
     private boolean isTxt(Document d)
     {
         return d.getDocumentBinaryData()==null;
