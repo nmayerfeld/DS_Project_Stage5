@@ -21,12 +21,10 @@ import jakarta.xml.bind.DatatypeConverter;
 public class DocumentPersistenceManager implements PersistenceManager<URI, Document> {
     private File baseDir;
     public DocumentPersistenceManager(File baseDir){
-        if(baseDir!=null)
-        {
+        if(baseDir!=null) {
             this.baseDir=baseDir;
         }
-        else
-        {
+        else {
             this.baseDir=new File(System.getProperty("user.dir")+File.separator);
         }
         baseDir.mkdir();
@@ -37,17 +35,14 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
         String json;
         String documentLocation="";
         String temps=uri.getSchemeSpecificPart();
-        for (int i=0;i<2;i++)
-        {
-            if(temps.substring(0,1).equals("/"))
-            {
+        for (int i=0;i<2;i++) {
+            if(temps.substring(0,1).equals("/")) {
                 temps=temps.substring(1);
             }
         }
         String[] words=temps.split("/");
         File oldFile=this.baseDir;
-        for(int i=0;i<words.length-1;i++) //excludes the last one which is the final file name
-        {
+        for(int i=0;i<words.length-1;i++) {
             File ff=new File(oldFile,words[i]);
             ff.mkdir();
             oldFile=ff;
@@ -56,8 +51,7 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
         f.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(f);
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-        if(val.getDocumentBinaryData()!=null)
-        {
+        if(val.getDocumentBinaryData()!=null) {
             JsonSerializer<Document> jd=new JsonSerializer<Document>() {
                 @Override
                 public JsonElement serialize(Document document, Type type, JsonSerializationContext jsonSerializationContext) {
@@ -70,8 +64,7 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
             Gson gson=new GsonBuilder().registerTypeAdapter(DocumentImpl.class,jd).create();
             json=gson.toJson(val);
         }
-        else
-        {
+        else {
             Gson gson=new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             json=gson.toJson(val);
         }
@@ -85,25 +78,21 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
     public Document deserialize(URI uri) throws IOException {
         //need to figure out how to delete the file and how to close it
         String temps=uri.getSchemeSpecificPart();
-        for (int i=0;i<2;i++)
-        {
-            if(temps.substring(0,1).equals("/"))
-            {
+        for (int i=0;i<2;i++) {
+            if(temps.substring(0,1).equals("/")) {
                 temps=temps.substring(1);
             }
         }
         String[] words=temps.split("/");
         File oldFile=this.baseDir;
-        for(int i=0;i<words.length-1;i++) //excludes the last one which is the final file name
-        {
+        for(int i=0;i<words.length-1;i++) {
             File ff=new File(oldFile,words[i]);
             ff.mkdir();
             oldFile=ff;
         }
         String s=words[words.length-1]+".json";
         File f=new File(oldFile.getAbsolutePath(),s);
-        if(!f.exists())
-        {
+        if(!f.exists()) {
             throw new IllegalArgumentException("filepath specified in uri doesn't exist");
         }
         FileInputStream fileIn = new FileInputStream(f);
@@ -115,8 +104,7 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
                 JsonObject j= json.getAsJsonObject();
                 try {
                     String myUriTemp= String.valueOf(j.get("uri"));
-                    if(myUriTemp.equals("null"))
-                    {
+                    if(myUriTemp.equals("null")) {
                         String s=String.valueOf(j.get("documentURI"));
                         String sFinal=s.substring(1,s.length()-1);
                         String text=String.valueOf(j.get("documentText"));
@@ -125,8 +113,7 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
                         ddd=new DocumentImpl(new URI(sFinal),textFinal,map);
                         ddd.setWordMap(map);
                     }
-                    else
-                    {
+                    else {
                         String myUri=myUriTemp.substring(1,myUriTemp.length()-1);
                         URI uri=new URI(myUri);
                         ddd=new DocumentImpl(uri,DatatypeConverter.parseBase64Binary(String.valueOf(j.get("contents binary"))));
@@ -156,17 +143,14 @@ public class DocumentPersistenceManager implements PersistenceManager<URI, Docum
     @Override
     public boolean delete(URI uri) throws IOException {
         String temps=uri.getSchemeSpecificPart();
-        for (int i=0;i<2;i++)
-        {
-            if(temps.substring(0,1).equals("/"))
-            {
+        for (int i=0;i<2;i++) {
+            if(temps.substring(0,1).equals("/")) {
                 temps=temps.substring(1);
             }
         }
         String[] words=temps.split("/");
         File oldFile=this.baseDir;
-        for(int i=0;i<words.length-1;i++) //excludes the last one which is the final file name
-        {
+        for(int i=0;i<words.length-1;i++) {
             File ff=new File(oldFile,words[i]);
             ff.mkdir();
             oldFile=ff;

@@ -8,18 +8,16 @@ public class MinHeapImpl<E extends Comparable<E>> extends MinHeap<E> {
     public MinHeapImpl(){
         this.elements= (E[]) new Comparable[10];
     }
-    /*public int getLength()
-    {
+    /*public int getLength() {
         return this.elements.length;
     }*/
+
     /**
      * @param element
      * ensures that E element is in the proper position in the MinHeap
      */
-    public void reHeapify(E element)
-    {
-        if(element==null)
-        {
+    public void reHeapify(E element) {
+        if(element==null) {
             throw new IllegalArgumentException("element is null");
         }
         int index=0;
@@ -32,29 +30,27 @@ public class MinHeapImpl<E extends Comparable<E>> extends MinHeap<E> {
         }catch(IllegalArgumentException e){return;}
         this.upHeap(index);
     }
+
     /**
-     * @param E element
+     * @param element
      * @return the index of the array where element is stored
      * @throws IllegalArgumentException if element is not in the array
      */
-    public int getArrayIndex(E element)
-    {
+    public int getArrayIndex(E element) {
         int index=-1;
-        for(int i=1;i<this.count+1;i++)
-        {
+        for(int i=1;i<this.count+1;i++) {
             E el=(E)(this.elements[i]);
-            if(el.equals(element))
-            {
+            if(el.equals(element)) {
                 index=i;
                 break;
             }
         }
-        if(index==-1)
-        {
+        if(index==-1) {
             throw new IllegalArgumentException("element not in array");
         }
         return index;
     }
+
     /**
      * doubles the size of the array
      */

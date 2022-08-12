@@ -1,12 +1,14 @@
 package edu.yu.cs.com1320.project.impl;
 import edu.yu.cs.com1320.project.Stack;
 
-public class StackImpl<T> implements Stack <T>
-{
+public class StackImpl<T> implements Stack <T> {
     class ListNode<T> {
         public T data;
         public ListNode next;
 
+        /**
+         * @param element
+         */
         public ListNode(T element) {
             this.next = null;
             this.data = element;
@@ -17,8 +19,7 @@ public class StackImpl<T> implements Stack <T>
         private ListNode head;
         private ListNode last;
 
-        LinkedList()
-        {
+        LinkedList() {
             this.head = null;
             this.last = null;
         }
@@ -34,6 +35,9 @@ public class StackImpl<T> implements Stack <T>
         }*/
 
         //adds new listNode to the front of the list, and changes last accordingly
+        /**
+         * @param c
+         */
         private void add(T c) {
             ListNode newNode = new ListNode(c);
             //set up last- for the first element in
@@ -43,20 +47,26 @@ public class StackImpl<T> implements Stack <T>
             newNode.next = this.head;
             this.head = newNode;
         }
-        private T removeFront() throws IllegalStateException
-        {
-            if(this.head==null)
-            {
+
+        /**
+         * @return
+         * @throws IllegalStateException
+         */
+        private T removeFront() throws IllegalStateException {
+            if(this.head==null) {
                 throw new IllegalStateException(("stack is empty"));
             }
             T myData= (T) this.head.data;
             this.head=this.head.next;
             return myData;
         }
-        private T viewFront() throws IllegalStateException
-        {
-            if(this.head==null)
-            {
+
+        /**
+         * @return
+         * @throws IllegalStateException
+         */
+        private T viewFront() throws IllegalStateException {
+            if(this.head==null) {
                 return null;
             }
             T myData= (T) this.head.data;
@@ -66,40 +76,39 @@ public class StackImpl<T> implements Stack <T>
     
     private LinkedList elementList;
     private int numInStack;
-    public StackImpl()
-    {
+    public StackImpl() {
         this.elementList=new LinkedList();
         this.numInStack=0;
     }
+
     /**
      * @param element
      */
-    public void push (T element)
-    {
+    public void push (T element) {
         this.elementList.add(element);
         this.numInStack++;
     }
+
     /**
      * @return the T at the top of the stack, removing it in the process
      * @throws IllegalStateException if stack is empty
      */
-    public T pop() throws IllegalStateException
-    {
-        if(numInStack==0)
-        {
+    public T pop() throws IllegalStateException {
+        if(numInStack==0) {
             return null;
         }
         this.numInStack--;
         return (T)this.elementList.removeFront();
     }
+
     /**
      * @return the T at the top of the stack
      * @throws IllegalStateException if stack is empty
      */
-    public T peek() throws IllegalStateException
-    {
+    public T peek() throws IllegalStateException {
         return (T)this.elementList.viewFront();
     }
+
     /**
      * @return the size of the stack
      */
